@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LuxDev Map</title>
+  <style>
+    /* ══════════════════════════════════════════
+       COMET CLIP TOKEN SYSTEM — ported from theme.css
+       Theme 0: Original dark (default)
+       Theme 1: LUDVIG 2 / temp2 (deep navy + orange)
+       Theme 2: Teal
+    ══════════════════════════════════════════ */
+
+    :root {
+      /* original dark — unchanged */
+      --cc-bg:       #0f0f13;
+      --cc-surface:  #18181f;
+      --cc-menu:     #13131a;
+      --cc-border:   #2a2a38;
+      --cc-text:     #e2e2e8;
+      --cc-text-sec: #6b6b80;
+      --cc-text-mid: #a0a0b8;
+      --cc-primary:  #a78bfa;
+      --cc-primary-s:#c4b5fd;
+      --cc-hover:    #1e1e2a;
+      --app-grad:
+        radial-gradient(900px 520px at 18% -10%, rgba(99,102,241,.14), transparent 60%),
+        radial-gradient(900px 520px at 90% 10%,  rgba(167,139,250,.10), transparent 55%);
+    }
+
+    [data-theme="ludvig2"] {
+      --cc-bg:       #0b1123;
+      --cc-surface:  #121d36;
+      --cc-menu:     #0d172d;
+      --cc-border:   #2a3e66;
+      --cc-text:     #e7eef8;
+      --cc-text-sec: #9fb2d3;
+      --cc-text-mid: #7a93be;
+      --cc-primary:  #ff8a1c;
+      --cc-primary-s:#ffad66;
+      --cc-hover:    #1b2a4d;
+      --app-grad:
+        radial-gradient(900px 520px at 12% -8%,  rgba(255,138,28,.24),  transparent 60%),
+        radial-gradient(900px 520px at 90%  8%,  rgba(56,189,248,.18),  transparent 55%),
+        radial-gradient(1000px 680px at 18% 120%,rgba(99,102,241,.16),  transparent 60%),
+        radial-gradient(700px  520px at 82% 120%,rgba(14,165,233,.10),  transparent 65%);
+    }
+
+    [data-theme="teal"] {
+      --cc-bg:       #042f2e;
+      --cc-surface:  #0f4c4a;
+      --cc-menu:     #083635;
+      --cc-border:   #134e4a;
+      --cc-text:     #f0fdfc;
+      --cc-text-sec: #5eead4;
+      --cc-text-mid: #99f6e4;
+      --cc-primary:  #2dd4bf;
+      --cc-primary-s:#5eead4;
+      --cc-hover:    #115e59;
+      --app-grad:
+        radial-gradient(900px 520px at 12% -10%, rgba(45,212,191,.22),  transparent 60%),
+        radial-gradient(900px 520px at 90%  10%, rgba(59,130,246,.14),  transparent 55%),
+        radial-gradient(900px 600px at 18%  120%,rgba(236,72,153,.06),  transparent 60%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--cc-bg);
+      background-image: var(--app-grad);
+      background-attachment: fixed;
+      color: var(--cc-text);
+      padding: 32px;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── Header row ── */
+    .header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--cc-primary);
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s;
+    }
+    .subtitle {
+      font-size: 0.8rem;
+      color: var(--cc-text-sec);
+      margin-bottom: 22px;
+      transition: color 0.3s;
+    }
+
+    /* ── Theme switcher ── */
+    .theme-switcher {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    .theme-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cc-text-sec);
+    }
+    .theme-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      position: relative;
+    }
+    .theme-swatch:hover { transform: scale(1.15); }
+    .theme-swatch.active { border-color: var(--cc-text); transform: scale(1.1); }
+    .swatch-default  { background: radial-gradient(circle at 35% 35%, #a78bfa, #0f0f13); }
+    .swatch-ludvig2  { background: radial-gradient(circle at 35% 35%, #ff8a1c, #0b1123); }
+    .swatch-teal     { background: radial-gradient(circle at 35% 35%, #2dd4bf, #042f2e); }
+
+    /* ── Tabs ── */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--cc-border);
+      padding-bottom: 0;
+      transition: border-color 0.3s;
+    }
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--cc-text-sec);
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid transparent;
+      border-bottom: none;
+      position: relative;
+      bottom: -1px;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      user-select: none;
+    }
+    .tab:hover { color: var(--cc-primary-s); background: var(--cc-surface); }
+    .tab.active {
+      color: var(--cc-primary-s);
+      background: var(--cc-surface);
+      border-color: var(--cc-border);
+      border-bottom-color: var(--cc-surface);
+    }
+    .tab svg { width: 14px; height: 14px; }
+
+    /* ── Panels ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--cc-surface);
+      border: 1px solid var(--cc-border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--cc-border);
+      transition: border-color 0.3s;
+    }
+    .card-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--cc-primary); transition: color 0.3s; }
+    .card-title { font-size: 0.95rem; font-weight: 600; color: var(--cc-primary-s); transition: color 0.3s; }
+    .card-body { padding: 10px 14px 14px 14px; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cc-text-sec);
+      margin-bottom: 5px;
+      margin-top: 10px;
+      transition: color 0.3s;
+    }
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 3px 0;
+      font-size: 0.8rem;
+      color: var(--cc-text-mid);
+      line-height: 1.4;
+    }
+    .item-icon { flex-shrink: 0; width: 13px; height: 13px; margin-top: 1px; color: var(--cc-text-sec); }
+    .sub-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 2px 0 2px 19px;
+      font-size: 0.75rem;
+      color: var(--cc-text-sec);
+      line-height: 1.4;
+    }
+    .sub-item-icon { flex-shrink: 0; width: 12px; height: 12px; margin-top: 1px; color: var(--cc-text-sec); opacity: .6; }
+
+    /* tags — use semi-transparent tints that shift with theme */
+    .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .tag-active     { background: rgba(74,222,128,.12); color: #4ade80; border: 1px solid rgba(74,222,128,.3); }
+    .tag-archive    { background: rgba(250,204,21,.10); color: #facc15; border: 1px solid rgba(250,204,21,.28); }
+    .tag-deprecated { background: rgba(248,113,113,.10); color: #f87171; border: 1px solid rgba(248,113,113,.28); }
+    .tag-workshop   { background: rgba(96,165,250,.10); color: #60a5fa; border: 1px solid rgba(96,165,250,.28); }
+    .tag-agent      { background: rgba(192,132,252,.10); color: #c084fc; border: 1px solid rgba(192,132,252,.28); }
+    .tag-db         { background: rgba(34,211,238,.10); color: #22d3ee; border: 1px solid rgba(34,211,238,.28); }
+    .tag-planned    { background: rgba(129,140,248,.10); color: #818cf8; border: 1px solid rgba(129,140,248,.28); }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      margin-right: 4px;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .dot-active   { background: #4ade80; }
+    .dot-complete { background: #60a5fa; }
+    .dot-planned  { background: #818cf8; }
+
+    .divider { height: 1px; background: var(--cc-border); margin: 10px 0; transition: background 0.3s; }
+
+    /* notion accent stripe */
+    .notion-card .card-header { border-left: 3px solid var(--cc-primary); padding-left: 13px; }
+
+    svg { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- ── SVG symbol defs ── -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="ic-folder" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1.5 4.5a1 1 0 0 1 1-1h3.17a1 1 0 0 1 .71.29L7.5 4.91H13.5a1 1 0 0 1 1 1V12a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1V4.5z"/>
+    </symbol>
+    <symbol id="ic-file" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 1.5h6l3 3v10a.5.5 0 0 1-.5.5h-8.5a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5z"/>
+      <path d="M9.5 1.5v3h3"/>
+    </symbol>
+    <symbol id="ic-image" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1.5" y="2.5" width="13" height="11" rx="1"/>
+      <circle cx="5.5" cy="6" r="1"/>
+      <path d="M1.5 11l3.5-3.5 2.5 2.5 2-2 4 4"/>
+    </symbol>
+    <symbol id="ic-zip" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 1.5h6l3 3v10a.5.5 0 0 1-.5.5h-8.5a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 .5-.5z"/>
+      <path d="M9.5 1.5v3h3M7 7v1M7 9v1M7 11v1M8 7v1M8 9v1M8 11v1"/>
+    </symbol>
+    <symbol id="ic-globe" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="8" r="6"/>
+      <path d="M2 8h12"/>
+      <path d="M8 2c-1.5 2-2 3.8-2 6s.5 4 2 6"/>
+      <path d="M8 2c1.5 2 2 3.8 2 6s-.5 4-2 6"/>
+    </symbol>
+    <symbol id="ic-docker" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="5" width="2.5" height="2" rx="0.3"/><rect x="5" y="5" width="2.5" height="2" rx="0.3"/>
+      <rect x="8" y="5" width="2.5" height="2" rx="0.3"/><rect x="5" y="3" width="2.5" height="2" rx="0.3"/>
+      <rect x="8" y="3" width="2.5" height="2" rx="0.3"/>
+      <path d="M1.5 8c.5 3 3 4 6 3.5 1-.15 2-.5 2.5-1.5h1a1.5 1.5 0 0 0 0-3h-.5"/>
+    </symbol>
+    <symbol id="ic-cpu" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="8" height="8" rx="1"/>
+      <path d="M6 4V2M8 4V2M10 4V2M6 14v-2M8 14v-2M10 14v-2M4 6H2M4 8H2M4 10H2M14 6h-2M14 8h-2M14 10h-2"/>
+    </symbol>
+    <symbol id="ic-flask" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 2h4M6 2v4.5L2.5 13a.8.8 0 0 0 .7 1.2h9.6a.8.8 0 0 0 .7-1.2L10 6.5V2"/>
+      <path d="M4.5 10.5h7"/>
+    </symbol>
+    <symbol id="ic-terminal" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/>
+      <path d="M4 6l2.5 2L4 10M8.5 10h3.5"/>
+    </symbol>
+    <symbol id="ic-zap" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 1.5L3 9h5l-1 5.5L14 7H9L9 1.5z"/>
+    </symbol>
+    <symbol id="ic-archive" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1.5" y="2.5" width="13" height="3" rx="0.5"/>
+      <path d="M2.5 5.5v7.5a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V5.5M6.5 8.5h3"/>
+    </symbol>
+    <symbol id="ic-swirl" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round">
+      <path d="M8 3a5 5 0 1 1-3.54 8.54"/>
+      <path d="M8 3c1 1 1.5 2.5 1 4s-2 3-1.5 4.5"/>
+    </symbol>
+    <symbol id="ic-books" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1.5" y="2.5" width="3" height="11" rx="0.5"/>
+      <rect x="5.5" y="3.5" width="3" height="10" rx="0.5"/>
+      <path d="M10 4.5l2.5-.8 2 9.5-2.5.8z"/>
+    </symbol>
+    <symbol id="ic-notebook" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="1.5" width="10" height="13" rx="1"/>
+      <path d="M3 5h10M3 8h10M3 11h6"/>
+      <path d="M1.5 4v0M1.5 7v0M1.5 10v0" stroke-width="2"/>
+    </symbol>
+    <symbol id="ic-folder-lg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 6a1.5 1.5 0 0 1 1.5-1.5h4l1.5 1.5H17.5A1.5 1.5 0 0 1 19 7.5V15a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 2 15V6z"/>
+    </symbol>
+    <!-- Notion-specific icons -->
+    <symbol id="ic-notion" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="1.5" width="11" height="13" rx="1.5"/>
+      <path d="M5 5h4M5 8h6M5 11h3"/>
+    </symbol>
+    <symbol id="ic-database" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="8" cy="4.5" rx="5.5" ry="2"/>
+      <path d="M2.5 4.5v3c0 1.1 2.46 2 5.5 2s5.5-.9 5.5-2v-3"/>
+      <path d="M2.5 7.5v3c0 1.1 2.46 2 5.5 2s5.5-.9 5.5-2v-3"/>
+    </symbol>
+    <symbol id="ic-robot" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="5.5" width="11" height="8" rx="1.5"/>
+      <path d="M5.5 9.5h.01M10.5 9.5h.01"/>
+      <path d="M6.5 12h3"/>
+      <path d="M8 5.5V3.5"/>
+      <circle cx="8" cy="3" r=".5" fill="currentColor"/>
+      <path d="M2.5 8.5H1M13.5 8.5H15"/>
+    </symbol>
+    <symbol id="ic-layers" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1.5 5.5l6.5-3 6.5 3-6.5 3z"/>
+      <path d="M1.5 9.5l6.5 3 6.5-3"/>
+      <path d="M1.5 7l6.5 3 6.5-3"/>
+    </symbol>
+    <symbol id="ic-package" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13.5 4.5l-5.5-3-5.5 3v7l5.5 3 5.5-3z"/>
+      <path d="M8 1.5v13"/>
+      <path d="M2.5 4.5l5.5 3 5.5-3"/>
+    </symbol>
+    <symbol id="ic-link" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6.5 9.5a3.5 3.5 0 0 0 5 0l2-2a3.5 3.5 0 0 0-5-5L7 4"/>
+      <path d="M9.5 6.5a3.5 3.5 0 0 0-5 0l-2 2a3.5 3.5 0 0 0 5 5L9 12"/>
+    </symbol>
+    <symbol id="ic-home" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M1.5 7L8 1.5 14.5 7"/>
+      <path d="M3 6v7.5a.5.5 0 0 0 .5.5H6.5v-4h3v4h3a.5.5 0 0 0 .5-.5V6"/>
+    </symbol>
+    <symbol id="ic-briefcase" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1.5" y="5.5" width="13" height="9" rx="1"/>
+      <path d="M5.5 5.5V4a1.5 1.5 0 0 1 1.5-1.5h2A1.5 1.5 0 0 1 10.5 4v1.5"/>
+      <path d="M1.5 9.5h13"/>
+    </symbol>
+    <symbol id="ic-sparkle" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 1.5v3M8 11.5v3M1.5 8h3M11.5 8h3"/>
+      <path d="M3.4 3.4l2.12 2.12M10.48 10.48l2.12 2.12M10.48 5.52l2.12-2.12M3.4 12.6l2.12-2.12"/>
+    </symbol>
+    <!-- git branch -->
+    <symbol id="ic-git" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="4.5" cy="3.5" r="1.5"/>
+      <circle cx="4.5" cy="12.5" r="1.5"/>
+      <circle cx="11.5" cy="5.5" r="1.5"/>
+      <path d="M4.5 5v5"/>
+      <path d="M4.5 5c0-1 .5-2 2-2.5s3.5-.5 4 2v1"/>
+    </symbol>
+    <!-- wrench -->
+    <symbol id="ic-wrench" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11.5 2a3 3 0 0 1 .7 3.3L8.7 8.7a3 3 0 1 1-1.4-1.4l3.4-3.5A3 3 0 0 1 11.5 2z"/>
+    </symbol>
+    <!-- tag -->
+    <symbol id="ic-tag" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 2h5.5l6 6-5.5 5.5-6-6V2z"/>
+      <circle cx="5" cy="5" r=".75" fill="currentColor" stroke="none"/>
+    </symbol>
+    <!-- server/backend -->
+    <symbol id="ic-server" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1.5" y="2.5" width="13" height="4" rx="1"/>
+      <rect x="1.5" y="9.5" width="13" height="4" rx="1"/>
+      <circle cx="4.5" cy="4.5" r=".6" fill="currentColor" stroke="none"/>
+      <circle cx="4.5" cy="11.5" r=".6" fill="currentColor" stroke="none"/>
+      <path d="M7.5 4.5h4M7.5 11.5h4"/>
+    </symbol>
+    <!-- cloud -->
+    <symbol id="ic-cloud" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.5 12a3 3 0 0 1 0-6 4 4 0 0 1 7.9.5 2.5 2.5 0 0 1-.4 4.5"/>
+      <path d="M8 9v5M6 12l2 2 2-2"/>
+    </symbol>
+    <!-- monitor/frontend -->
+    <symbol id="ic-monitor" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1.5" y="2" width="13" height="9" rx="1"/>
+      <path d="M5.5 14.5h5M8 11v3.5"/>
+    </symbol>
+    <!-- test beaker -->
+    <symbol id="ic-test" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 2h4M6 2v4.5L2.5 13a.8.8 0 0 0 .7 1.2h9.6a.8.8 0 0 0 .7-1.2L10 6.5V2"/>
+      <path d="M4.5 10.5h7"/>
+      <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" stroke="none"/>
+      <circle cx="9" cy="11.5" r=".4" fill="currentColor" stroke="none"/>
+    </symbol>
+    <!-- workflow/automation -->
+    <symbol id="ic-flow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="1.5" y="1.5" width="4" height="3" rx=".75"/>
+      <rect x="1.5" y="11.5" width="4" height="3" rx=".75"/>
+      <rect x="10.5" y="6.5" width="4" height="3" rx=".75"/>
+      <path d="M5.5 3h3a2 2 0 0 1 2 2v1.5M5.5 13h3a2 2 0 0 0 2-2V10"/>
+    </symbol>
+    <!-- design palette -->
+    <symbol id="ic-palette" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="8" cy="8" r="6"/>
+      <circle cx="5.5" cy="6" r=".75" fill="currentColor" stroke="none"/>
+      <circle cx="8" cy="4.5" r=".75" fill="currentColor" stroke="none"/>
+      <circle cx="10.5" cy="6" r=".75" fill="currentColor" stroke="none"/>
+      <path d="M8 14c0-2 1.5-2.5 1.5-4a1.5 1.5 0 0 0-3 0c0 1.5 1.5 2 1.5 4z"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ── Page header ── -->
+<div class="header-row">
+  <div>
+    <h1>
+      <svg width="18" height="18"><use href="#ic-folder-lg"/></svg>
+      LuxDev Map
+    </h1>
+  </div>
+  <div class="theme-switcher">
+    <span class="theme-label">Theme</span>
+    <div class="theme-swatch swatch-default active" title="Default dark" onclick="setTheme('default', this)"></div>
+    <div class="theme-swatch swatch-ludvig2"         title="LUDVIG 2"     onclick="setTheme('ludvig2', this)"></div>
+    <div class="theme-swatch swatch-teal"            title="Teal"          onclick="setTheme('teal', this)"></div>
+  </div>
+</div>
+<p class="subtitle">Selected workspace + Notion teamspace · March 19, 2026</p>
+
+<!-- ── Tab bar ── -->
+<div class="tab-bar">
+  <div class="tab active" onclick="switchTab('files')">
+    <svg><use href="#ic-folder"/></svg>
+    File System
+  </div>
+  <div class="tab" onclick="switchTab('notion')">
+    <svg><use href="#ic-notion"/></svg>
+    Notion Teamspace
+  </div>
+  <div class="tab" onclick="switchTab('github')">
+    <svg><use href="#ic-git"/></svg>
+    GitHub Repos
+  </div>
+  <div class="tab" onclick="switchTab('tools')">
+    <svg><use href="#ic-wrench"/></svg>
+    Tools &amp; Services
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 1 — FILE SYSTEM
+═══════════════════════════════════════ -->
+<div class="panel active" id="panel-files">
+<div class="grid">
+
+  <!-- AI / Current -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-cpu"/></svg>
+      <span class="card-title">AI / Current</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Context Documents</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> AI Training Custom Modules.pdf</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> doug_system_instructions.pdf</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> LuxDev System Instructions.pdf</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> LuxScript.pdf</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> Model Behavior Framework (MDF) v3.3.pdf</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> PnQs v4.pdf</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> Notion Files / <span style="color:#6b6b80;font-size:.72rem">expanded + LuxScript PDFs &amp; CSVs</span></div>
+
+      <div class="section-label">LuxAmz</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> Amazon Policies PDFs (v3 final set)</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-zip"/></svg> Amazon_Policies_Playbook_Final.zip</div>
+
+      <div class="section-label">LuxGen</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> Catalog Department Overview.pdf</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-image"/></svg> Gemini_Generated_Image.png</div>
+
+      <div class="section-label">Notion</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> DOUG_20260218 · DOUG + DOUG Expanded</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> LUDVIG v2.pdf, v3.pdf</div>
+
+      <div class="section-label">Agents</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> agnamo-agent-manager.agent.md</div>
+
+      <div class="section-label">Codex / vsDoug</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> Codex/General · vsDoug (empty)</div>
+    </div>
+  </div>
+
+  <!-- AI / Workshop -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-flask"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">AI / Workshop</span>
+        <span class="tag tag-workshop">workshop</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Downloaded Repos</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> claude-cookbooks-main</div>
+      <div class="sub-item"><svg class="sub-item-icon"><use href="#ic-notebook"/></svg> capabilities: classification, RAG, contextual-embeddings, summarization, text-to-sql</div>
+      <div class="sub-item"><svg class="sub-item-icon"><use href="#ic-notebook"/></svg> claude_agent_sdk: one-liner, chief-of-staff, observability, SRE agents</div>
+
+      <div class="section-label">Skills</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> (skill files)</div>
+
+      <div class="section-label">LuxDev Context Documents</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> (context docs)</div>
+
+      <div class="section-label">Files</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> files/</div>
+
+      <div class="divider"></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-globe"/></svg> ai-ecosystem-map.html</div>
+
+      <div class="section-label">AI / Deprecated</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> <span class="tag tag-deprecated">deprecated</span> &nbsp;(archived AI work)</div>
+    </div>
+  </div>
+
+  <!-- Agents -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-terminal"/></svg>
+      <span class="card-title">Agents</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">federated-retrieval</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> PROJECT.md</div>
+      <div class="section-label">n8n-local</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-docker"/></svg> docker-compose.yml</div>
+      <div class="section-label">Skills</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> docker-setup-skill.md</div>
+    </div>
+  </div>
+
+  <!-- Apps / Active -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-zap"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">Apps / Active</span>
+        <span class="tag tag-active">active</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Projects</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> LuxDev Agnamo</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> LuxDev-Comet-Clip</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> LuxDev-Ramen</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> anti-data-professional</div>
+    </div>
+  </div>
+
+  <!-- Apps / Archive -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-archive"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">Apps / Archive</span>
+        <span class="tag tag-archive">archive</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Archived Projects</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> BigMapper</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> ReplitExport-luxtest</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> SvL GPT</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> anti-data</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> comet-clip-backup</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> discord bots</div>
+    </div>
+  </div>
+
+  <!-- Docker -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-docker"/></svg>
+      <span class="card-title">Docker</span>
+    </div>
+    <div class="card-body">
+      <div class="item" style="margin-top:6px;color:#6b7280;font-size:.8rem">Docker configs / compose files</div>
+    </div>
+  </div>
+
+  <!-- Limbo -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-swirl"/></svg>
+      <span class="card-title">Limbo</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">luxdev-disc-embed</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> src/</div>
+    </div>
+  </div>
+
+  <!-- Resources -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-books"/></svg>
+      <span class="card-title">Resources</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Discord Documentation</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> Discord API docs &amp; guides</div>
+      <div class="section-label">Tools and GitHub Finds</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> claude-cookbooks-main</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> discord-api-docs-main</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> discord.js-main</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> hve-core-main</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> python-discord-webhook-master</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> archive/</div>
+      <div class="section-label">Assorted</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> comet_clip_testing / temp</div>
+      <div class="section-label">Local Tester</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> assets / ui</div>
+      <div class="section-label">Other</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> master_mapping_keys</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> notion backups / 01 notion backup</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     TAB 2 — NOTION TEAMSPACE
+═══════════════════════════════════════ -->
+<div class="panel" id="panel-notion">
+<div class="grid">
+
+  <!-- Lux Central (hub) -->
+  <div class="card notion-card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-home"/></svg>
+      <span class="card-title">Lux Central</span>
+    </div>
+    <div class="card-body">
+      <div class="item" style="color:#6b7280;font-size:.75rem;margin-bottom:4px;font-style:italic">"To fuck around and create many little neat things"</div>
+      <div class="section-label">Sitemap</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-link"/></svg> Lux Central (hub)</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-link"/></svg> Professional Projects</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-link"/></svg> Personal Projects</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-link"/></svg> Integrations</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-link"/></svg> Inspiration</div>
+      <div class="section-label">Featured Works</div>
+      <div class="item">
+        <span class="status-dot dot-complete"></span>
+        BigMapper v2.5 — CSV/TSV windows app
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Anti-Data v13.2.1 — data processing web app
+      </div>
+      <div class="section-label">Database</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> LuxDev Projects <span class="tag tag-db" style="margin-left:4px">db</span></div>
+    </div>
+  </div>
+
+  <!-- Tools, Guides and AI -->
+  <div class="card notion-card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-sparkle"/></svg>
+      <span class="card-title">Tools, Guides &amp; AI</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Model Development Pages</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LUDVIG v.2</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LuxScript</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Prompt Net Quality Score (PnQs)</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LUDVIG Design: Master Library</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LuxDev Model Development</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> AntiData × KPLux</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Vector Storage</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> MFBA Report Logic</div>
+
+      <div class="section-label">Agent Databases</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Agent Index <span class="tag tag-db" style="margin-left:4px">db</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Agent Run Log <span class="tag tag-db" style="margin-left:4px">db</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Agent Orchestration <span class="tag tag-db" style="margin-left:4px">db</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Webhooks <span class="tag tag-db" style="margin-left:4px">db</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> PnQs Calibration <span class="tag tag-db" style="margin-left:4px">db</span></div>
+
+      <div class="section-label">Sub-pages</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LuxDev Agents</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LuxDev: RAG, Vector &amp; Retrieval Agents</div>
+    </div>
+  </div>
+
+  <!-- LuxDev Agents (deep) -->
+  <div class="card notion-card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-robot"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">LuxDev Agents</span>
+        <span class="tag tag-agent">agents</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Kickstart Agent</div>
+      <div class="item" style="color:#a0a0b8;font-size:.77rem">Vague inputs → structured plans + code scaffolds</div>
+      <div class="sub-item"><svg class="sub-item-icon"><use href="#ic-robot"/></svg> Clarifier → Architect → Coder → Tester → Experiment</div>
+
+      <div class="section-label">Admo Agent</div>
+      <div class="item" style="color:#a0a0b8;font-size:.77rem">Signals → living documentation + admin ops</div>
+      <div class="sub-item"><svg class="sub-item-icon"><use href="#ic-robot"/></svg> Classifier → Doc Structurer → Versioner → Compliance → Comms</div>
+
+      <div class="section-label">Active Agent Projects</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        asabi — Asana → BigQuery Sync
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        LOAKI — LuxDev Orchestrated API Agent Kit
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Agnamo — Agent Manager
+      </div>
+
+      <div class="section-label">Databases</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> asabi Tasks &amp; Integration <span class="tag tag-db" style="margin-left:4px">db</span></div>
+    </div>
+  </div>
+
+  <!-- Apps and Development -->
+  <div class="card notion-card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-package"/></svg>
+      <span class="card-title">Apps &amp; Development</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">App Database</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> App Database <span class="tag tag-db" style="margin-left:4px">db</span></div>
+
+      <div class="section-label">Active Apps</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Anti-Data v13.2.1 <span style="color:#6b7280;font-size:.72rem">— data processing / remapping</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Comet Clip <span style="color:#6b7280;font-size:.72rem">— themed UI components</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        KPLux v3.0 <span style="color:#6b7280;font-size:.72rem">— employee performance BI dashboard</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Agnamo <span style="color:#6b7280;font-size:.72rem">— agent manager</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        LuxScript v3.0 <span style="color:#6b7280;font-size:.72rem">— DSL for charts &amp; data viz</span>
+      </div>
+
+      <div class="section-label">Planned</div>
+      <div class="item">
+        <span class="status-dot dot-planned"></span>
+        LuxQuery v1.0 <span style="color:#6b7280;font-size:.72rem">— BigQuery interface</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-planned"></span>
+        BauBau v1.0 <span style="color:#6b7280;font-size:.72rem">— dashboard + data upload</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-planned"></span>
+        LuxDev Ramen <span style="color:#6b7280;font-size:.72rem">— in ideation</span>
+      </div>
+
+      <div class="section-label">Complete</div>
+      <div class="item">
+        <span class="status-dot dot-complete"></span>
+        BigMapper v2.5 <span style="color:#6b7280;font-size:.72rem">— CSV/TSV windows app</span>
+      </div>
+
+      <div class="section-label">Templates</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LuxDev: Workshop [TEMPLATE]</div>
+    </div>
+  </div>
+
+  <!-- LuxDev Agency -->
+  <div class="card notion-card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-briefcase"/></svg>
+      <span class="card-title">LuxDev Agency</span>
+    </div>
+    <div class="card-body">
+      <div class="item" style="color:#6b7280;font-size:.75rem;margin-bottom:4px;font-style:italic">Cut external dependencies, return Agency to the client</div>
+
+      <div class="section-label">Doug Check-ins</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Doug Tasks <span class="tag tag-db" style="margin-left:4px">db</span></div>
+
+      <div class="section-label">Agent Resources</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Agents <span class="tag tag-db" style="margin-left:4px">db</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Skills <span class="tag tag-db" style="margin-left:4px">db</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Other Context <span class="tag tag-db" style="margin-left:4px">db</span></div>
+
+      <div class="section-label">Sub-pages</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LOAKI: API Agent Kit</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Contract Template</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Guide Template</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Workshop [Template]</div>
+    </div>
+  </div>
+
+  <!-- Model Development / AI Framework -->
+  <div class="card notion-card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-layers"/></svg>
+      <span class="card-title">AI Framework / Models</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">LuxCentral Ecosystem</div>
+      <div class="item" style="color:#6b7280;font-size:.75rem;margin-bottom:6px">Central hub organizing all projects, tools &amp; systems</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Data Tools → BigMapper, Anti-Data, YouBuilder</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Analytics → KPLux, LuxQuery, BauBau</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> AI Integration → LuxScript, LuxMapping, Gemini</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Design Systems → LUDVIG, Comet Clip, LuxChroma</div>
+
+      <div class="section-label">Compliance Layer</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Doug (AI model)</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> MDF — Model Behavior Framework</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> PnQs — Prompt Quality Scoring</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> AI Custom Modules</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> System Instructions</div>
+
+      <div class="section-label">LUDVIG</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        LUDVIG v.2 — AI instruction framework
+      </div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> LUDVIG Design: Master Library</div>
+    </div>
+  </div>
+
+  <!-- LuxAmz -->
+  <div class="card notion-card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-package"/></svg>
+      <span class="card-title">LuxAmz — Amazon &amp; eCommerce</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Policy Docs</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Account Health &amp; Legal</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Catalog &amp; Listing Management</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Content &amp; Merchandising</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Customer Service &amp; Returns</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> FBA Inventory, Costs &amp; Reporting</div>
+      <div class="section-label">Analytics</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> E-commerce &amp; Catalog Analytics</div>
+    </div>
+  </div>
+
+  <!-- Resources & Databases -->
+  <div class="card notion-card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-books"/></svg>
+      <span class="card-title">Resources &amp; Databases</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Reference Pages</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Resources</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Analytics Platforms</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Data Tools</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Design Systems</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> AI Platforms</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Style Guide</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Docker Setup</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Draw.io Integration: Mermaid plugin</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Documentation</div>
+
+      <div class="section-label">Task Databases</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> luxdev-tasks <span class="tag tag-db" style="margin-left:4px">db</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> Tasks Tracker <span class="tag tag-db" style="margin-left:4px">db</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> LuxDev Projects <span class="tag tag-db" style="margin-left:4px">db</span></div>
+
+      <div class="section-label">Daily / Scratch</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Daily</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-notion"/></svg> Ideation [Template]</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TAB 3 — GITHUB REPOS
+═══════════════════════════════════════ -->
+<div class="panel" id="panel-github">
+<div class="grid">
+
+  <!-- Agnamo -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-git"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">LuxDev-Agnamo</span>
+        <span class="tag tag-active">active</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="item" style="color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic">Agent manager — orchestrates and runs LuxDev agents</div>
+      <div class="section-label">Structure</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> client/ · server/ · scripts/ · tests/ · docs/</div>
+      <div class="section-label">Stack</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-server"/></svg> Express · Zod</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-test"/></svg> Vitest · Playwright · Supertest</div>
+      <div class="section-label">Key Files</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> package.json · playwright.config.js</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> vitest.config.js · Run Agnamo.bat</div>
+    </div>
+  </div>
+
+  <!-- anti-data-professional -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-git"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">anti-data-professional</span>
+        <span class="tag tag-active">active</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="item" style="color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic">Modular data processing web app — ANALYZE, REMAP, COMPARE</div>
+      <div class="section-label">Stack</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-monitor"/></svg> React · TypeScript · Vite</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Recharts · lucide-react · xlsx</div>
+    </div>
+  </div>
+
+  <!-- LuxDev-Ramen -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-git"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">LuxDev-Ramen</span>
+        <span class="tag tag-active">active</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="item" style="color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic">Desktop app — Electron frontend + FastAPI backend</div>
+      <div class="section-label">Frontend</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-monitor"/></svg> React · Electron · Vite · Zustand</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-test"/></svg> Vitest · @testing-library/react</div>
+      <div class="section-label">Backend</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-server"/></svg> FastAPI · Uvicorn · Pydantic v2</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-robot"/></svg> anthropic SDK · httpx · sse-starlette</div>
+      <div class="section-label">Key Files</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> ramen.exe · ramen-backend.spec</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-file"/></svg> SKILL.md · TESTING.md · pytest.ini</div>
+    </div>
+  </div>
+
+  <!-- LuxDev-Comet-Clip -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-git"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">LuxDev-Comet-Clip</span>
+        <span class="tag tag-active">active</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="item" style="color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic">Themed UI component library — CSS variables + design tokens</div>
+      <div class="section-label">Stack</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-palette"/></svg> CSS · Design tokens · Theme system</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> 6 theme variants · frosted glass · animation</div>
+    </div>
+  </div>
+
+  <!-- BigMapper (complete) -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-git"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">BigMapper</span>
+        <span class="tag tag-db">complete</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="item" style="color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic">v2.5 — CSV/TSV mapping, comparison &amp; remapping (Windows)</div>
+      <div class="section-label">Stack</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-monitor"/></svg> React · Electron · Tailwind CSS</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> lucide-react · electron-builder</div>
+    </div>
+  </div>
+
+  <!-- Agent Projects -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-robot"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">Agent Projects</span>
+        <span class="tag tag-agent">agents</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-label">asabi</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-flow"/></svg> Asana → BigQuery sync pipeline</div>
+      <div class="sub-item"><svg class="sub-item-icon"><use href="#ic-tag"/></svg> Python · ThreadPoolExecutor · n8n orchestration</div>
+
+      <div class="section-label">LOAKI</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-robot"/></svg> LuxDev Orchestrated API Agent Kit</div>
+      <div class="sub-item"><svg class="sub-item-icon"><use href="#ic-tag"/></svg> Contract through validation pipeline</div>
+
+      <div class="section-label">federated-retrieval</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-database"/></svg> RAG / vector / retrieval agent</div>
+      <div class="sub-item"><svg class="sub-item-icon"><use href="#ic-file"/></svg> PROJECT.md</div>
+    </div>
+  </div>
+
+  <!-- Reference Repos -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-books"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">Reference Repos</span>
+        <span class="tag tag-workshop">reference</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="section-label">AI</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> claude-cookbooks-main <span style="color:#6b7280;font-size:.72rem">— Anthropic SDK examples &amp; RAG guides</span></div>
+
+      <div class="section-label">Discord</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> discord-api-docs-main</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> discord.js-main</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> python-discord-webhook-master</div>
+
+      <div class="section-label">Other</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> hve-core-main</div>
+    </div>
+  </div>
+
+  <!-- Archived Apps -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-archive"/></svg>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="card-title">Archived Repos</span>
+        <span class="tag tag-archive">archive</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> anti-data <span style="color:#6b7280;font-size:.72rem">— v1 → v4 archive branches</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> SvL GPT</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> ReplitExport-luxtest</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> discord bots <span style="color:#6b7280;font-size:.72rem">— discord.js based</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> comet-clip-backup</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     TAB 4 — TOOLS & SERVICES
+═══════════════════════════════════════ -->
+<div class="panel" id="panel-tools">
+<div class="grid">
+
+  <!-- AI & Models -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-robot"/></svg>
+      <span class="card-title">AI &amp; Models</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">External APIs</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Claude (Anthropic) <span style="color:#6b7280;font-size:.72rem">— claude-sonnet-4-6 · SDK via pip</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Gemini Pro (Google) <span style="color:#6b7280;font-size:.72rem">— multimodal, KPLux + LuxChroma</span>
+      </div>
+
+      <div class="section-label">Custom LuxDev Models</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-layers"/></svg> Doug <span style="color:#6b7280;font-size:.72rem">— primary AI model</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-layers"/></svg> LUDVIG <span style="color:#6b7280;font-size:.72rem">— design + instruction framework (v2)</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-layers"/></svg> MDF <span style="color:#6b7280;font-size:.72rem">— Model Behavior Framework v3.3</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-layers"/></svg> PnQs <span style="color:#6b7280;font-size:.72rem">— Prompt Net Quality Score v4</span></div>
+
+      <div class="section-label">Custom DSLs</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-terminal"/></svg> LuxScript v3.0 <span style="color:#6b7280;font-size:.72rem">— chart + viz DSL</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-terminal"/></svg> LuxMapping v2.0 <span style="color:#6b7280;font-size:.72rem">— field alignment engine</span></div>
+    </div>
+  </div>
+
+  <!-- Data & Cloud -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-cloud"/></svg>
+      <span class="card-title">Data &amp; Cloud</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Data Warehouses</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Google BigQuery <span style="color:#6b7280;font-size:.72rem">— primary analytics warehouse</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Supabase <span style="color:#6b7280;font-size:.72rem">— Postgres + realtime (Keepa/n8n)</span>
+      </div>
+
+      <div class="section-label">App Backends</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Firebase <span style="color:#6b7280;font-size:.72rem">— KPLux &amp; analytics platforms</span>
+      </div>
+
+      <div class="section-label">External Data</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Keepa <span style="color:#6b7280;font-size:.72rem">— Amazon product data → n8n → Supabase</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Asana API <span style="color:#6b7280;font-size:.72rem">— task data → BigQuery (asabi)</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Google Drive <span style="color:#6b7280;font-size:.72rem">— Drive to Data integration</span></div>
+    </div>
+  </div>
+
+  <!-- Frontend Stack -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-monitor"/></svg>
+      <span class="card-title">Frontend</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Core</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> React <span style="color:#6b7280;font-size:.72rem">— all web + desktop apps</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> TypeScript <span style="color:#6b7280;font-size:.72rem">— anti-data-professional, Ramen</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Vite <span style="color:#6b7280;font-size:.72rem">— build tooling</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Tailwind CSS <span style="color:#6b7280;font-size:.72rem">— BigMapper + KPLux</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Electron <span style="color:#6b7280;font-size:.72rem">— Ramen + BigMapper (desktop)</span></div>
+
+      <div class="section-label">State &amp; Data</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Zustand <span style="color:#6b7280;font-size:.72rem">— Ramen state management</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Recharts <span style="color:#6b7280;font-size:.72rem">— anti-data charts</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> D3.js <span style="color:#6b7280;font-size:.72rem">— analytics platforms</span></div>
+
+      <div class="section-label">UI</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> lucide-react <span style="color:#6b7280;font-size:.72rem">— icon library</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> xlsx <span style="color:#6b7280;font-size:.72rem">— spreadsheet parsing</span></div>
+    </div>
+  </div>
+
+  <!-- Backend Stack -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-server"/></svg>
+      <span class="card-title">Backend</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Node</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Express v4 <span style="color:#6b7280;font-size:.72rem">— Agnamo server</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Zod <span style="color:#6b7280;font-size:.72rem">— schema validation</span></div>
+
+      <div class="section-label">Python</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> FastAPI + Uvicorn <span style="color:#6b7280;font-size:.72rem">— Ramen backend</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Pydantic v2 <span style="color:#6b7280;font-size:.72rem">— data models</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> sse-starlette <span style="color:#6b7280;font-size:.72rem">— streaming responses</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> httpx <span style="color:#6b7280;font-size:.72rem">— async HTTP client</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Pandas · NumPy <span style="color:#6b7280;font-size:.72rem">— data tools (Anti-Data, asabi)</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> CustomTkinter <span style="color:#6b7280;font-size:.72rem">— Anti-Data desktop UI</span></div>
+
+      <div class="section-label">Security</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-folder"/></svg> security/ module <span style="color:#6b7280;font-size:.72rem">— in Ramen backend</span></div>
+    </div>
+  </div>
+
+  <!-- Testing -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-test"/></svg>
+      <span class="card-title">Testing</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">JavaScript / TypeScript</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Vitest <span style="color:#6b7280;font-size:.72rem">— unit tests (Agnamo, Ramen)</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Playwright <span style="color:#6b7280;font-size:.72rem">— e2e browser tests (Agnamo)</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Supertest <span style="color:#6b7280;font-size:.72rem">— API integration tests</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> @testing-library/react <span style="color:#6b7280;font-size:.72rem">— Ramen frontend</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> jsdom <span style="color:#6b7280;font-size:.72rem">— DOM simulation</span></div>
+
+      <div class="section-label">Python</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> pytest <span style="color:#6b7280;font-size:.72rem">— Ramen backend (pytest.ini)</span></div>
+    </div>
+  </div>
+
+  <!-- Automation & Orchestration -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-flow"/></svg>
+      <span class="card-title">Automation &amp; Orchestration</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Workflow</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        n8n (self-hosted) <span style="color:#6b7280;font-size:.72rem">— Docker compose · local</span>
+      </div>
+      <div class="sub-item"><svg class="sub-item-icon"><use href="#ic-flow"/></svg> Keepa → Supabase · Comet Clip · asabi wrap</div>
+
+      <div class="section-label">Project Management</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Asana <span style="color:#6b7280;font-size:.72rem">— tasks → BigQuery via asabi</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Notion <span style="color:#6b7280;font-size:.72rem">— workspace / docs / databases</span>
+      </div>
+
+      <div class="section-label">DevOps</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-docker"/></svg> Docker <span style="color:#6b7280;font-size:.72rem">— n8n local · containerization</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-git"/></svg> GitHub <span style="color:#6b7280;font-size:.72rem">— LuxDevNet org · all active repos</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> npm <span style="color:#6b7280;font-size:.72rem">— JS package management</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> pip / pyproject <span style="color:#6b7280;font-size:.72rem">— Python package management</span></div>
+    </div>
+  </div>
+
+  <!-- Design System -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-palette"/></svg>
+      <span class="card-title">Design System</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">LuxDev Design Stack</div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        LUDVIG v2 <span style="color:#6b7280;font-size:.72rem">— master design + AI framework</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        Comet Clip <span style="color:#6b7280;font-size:.72rem">— themed CSS component library</span>
+      </div>
+      <div class="item">
+        <span class="status-dot dot-active"></span>
+        LuxChroma <span style="color:#6b7280;font-size:.72rem">— React theme builder + Gemini</span>
+      </div>
+
+      <div class="section-label">Design Philosophy</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Bauhaus meets Skeuomorphism</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Frosted glass · varying line weights</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Top nav · heavy animation · 6 themes</div>
+
+      <div class="section-label">Diagramming</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Draw.io + Mermaid plugin</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Mermaid (inline Notion)</div>
+    </div>
+  </div>
+
+  <!-- Platform Integrations -->
+  <div class="card">
+    <div class="card-header">
+      <svg class="card-icon"><use href="#ic-link"/></svg>
+      <span class="card-title">Platform Integrations</span>
+    </div>
+    <div class="card-body">
+      <div class="section-label">Google Ecosystem</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-cloud"/></svg> BigQuery <span style="color:#6b7280;font-size:.72rem">— analytics + asabi sync target</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-cloud"/></svg> Firebase <span style="color:#6b7280;font-size:.72rem">— app backend</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-cloud"/></svg> Gemini Pro API <span style="color:#6b7280;font-size:.72rem">— AI capabilities</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-cloud"/></svg> Google Drive <span style="color:#6b7280;font-size:.72rem">— Drive to Data workflow</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-cloud"/></svg> Google Calendar <span style="color:#6b7280;font-size:.72rem">— Notion integration</span></div>
+
+      <div class="section-label">Communication</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-globe"/></svg> Discord <span style="color:#6b7280;font-size:.72rem">— bots + webhooks (nls.github-disc)</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-globe"/></svg> Notion Mail <span style="color:#6b7280;font-size:.72rem">— email in workspace</span></div>
+
+      <div class="section-label">Amazon / eCommerce</div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Keepa API <span style="color:#6b7280;font-size:.72rem">— product &amp; price data</span></div>
+      <div class="item"><svg class="item-icon"><use href="#ic-tag"/></svg> Amazon Seller APIs <span style="color:#6b7280;font-size:.72rem">— FBA, catalog, account health</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('[onclick="switchTab(\'' + name + '\')"]').classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+
+  function setTheme(name, el) {
+    document.documentElement.removeAttribute('data-theme');
+    if (name !== 'default') document.documentElement.setAttribute('data-theme', name);
+    document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+    localStorage.setItem('lux-map-theme', name);
+  }
+
+  // restore on load
+  (function() {
+    const saved = localStorage.getItem('lux-map-theme');
+    if (saved && saved !== 'default') {
+      document.documentElement.setAttribute('data-theme', saved);
+      const swatchClass = 'swatch-' + saved;
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('active'));
+        const el = document.querySelector('.' + swatchClass);
+        if (el) el.classList.add('active');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

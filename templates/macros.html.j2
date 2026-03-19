@@ -1,0 +1,70 @@
+{% macro render_tag(tag) %}
+<span class="tag tag-{{ tag.type }}">{{ tag.label }}</span>
+{% endmacro %}
+
+{% macro render_status_dot(status) %}
+<span class="status-dot dot-{{ status }}"></span>
+{% endmacro %}
+
+{% macro render_sub_item(sub) %}
+<div class="sub-item">
+  <svg class="sub-item-icon"><use href="#{{ sub.icon }}"/></svg>
+  {{ sub.text }}
+</div>
+{% endmacro %}
+
+{% macro render_item(item) %}
+<div class="item"{% if item.style is defined and item.style %} style="{{ item.style }}"{% endif %}>
+  {% if item.status_dot is defined and item.status_dot %}
+    {{ render_status_dot(item.status_dot) }}
+  {% elif item.icon is defined and item.icon %}
+    <svg class="item-icon"><use href="#{{ item.icon }}"/></svg>
+  {% endif %}
+  {{ item.text | safe }}
+  {% if item.description is defined and item.description %}
+    <span style="color:#6b7280;font-size:.72rem"> — {{ item.description }}</span>
+  {% endif %}
+  {% for tag in (item.tags or []) %}
+    {{ render_tag(tag) }}
+  {% endfor %}
+  {% for sub in (item.sub_items or []) %}
+    {{ render_sub_item(sub) }}
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro render_section(section) %}
+{% if section.label %}
+<div class="section-label">{{ section.label }}</div>
+{% endif %}
+{% for item in section.items %}
+  {{ render_item(item) }}
+{% endfor %}
+{% endmacro %}
+
+{% macro render_card(card) %}
+<div class="card{% if card.notion_card %} notion-card{% endif %}">
+  <div class="card-header">
+    <svg class="card-icon"><use href="#{{ card.icon }}"/></svg>
+    {% if card.tags %}
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="card-title">{{ card.title | safe }}</span>
+      {% for tag in card.tags %}{{ render_tag(tag) }}{% endfor %}
+    </div>
+    {% else %}
+    <span class="card-title">{{ card.title | safe }}</span>
+    {% endif %}
+  </div>
+  <div class="card-body">
+    {% for section in (card.sections or []) %}
+      {{ render_section(section) }}
+    {% endfor %}
+    {% if card.divider_before_extra %}
+    <div class="divider"></div>
+    {% endif %}
+    {% for item in (card.extra_items or []) %}
+      {{ render_item(item) }}
+    {% endfor %}
+  </div>
+</div>
+{% endmacro %}

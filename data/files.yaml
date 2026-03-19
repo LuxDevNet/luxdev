@@ -1,0 +1,214 @@
+- title: "AI / Current"
+  icon: ic-cpu
+  notion_card: false
+  tags: []
+  sections:
+    - label: "Context Documents"
+      items:
+        - icon: ic-file
+          text: "AI Training Custom Modules.pdf"
+        - icon: ic-file
+          text: "doug_system_instructions.pdf"
+        - icon: ic-file
+          text: "LuxDev System Instructions.pdf"
+        - icon: ic-file
+          text: "LuxScript.pdf"
+        - icon: ic-file
+          text: "Model Behavior Framework (MDF) v3.3.pdf"
+        - icon: ic-file
+          text: "PnQs v4.pdf"
+        - icon: ic-folder
+          text: "Notion Files / <span style=\"color:#6b6b80;font-size:.72rem\">expanded + LuxScript PDFs &amp; CSVs</span>"
+    - label: "LuxAmz"
+      items:
+        - icon: ic-file
+          text: "Amazon Policies PDFs (v3 final set)"
+        - icon: ic-zip
+          text: "Amazon_Policies_Playbook_Final.zip"
+    - label: "LuxGen"
+      items:
+        - icon: ic-file
+          text: "Catalog Department Overview.pdf"
+        - icon: ic-image
+          text: "Gemini_Generated_Image.png"
+    - label: "Notion"
+      items:
+        - icon: ic-folder
+          text: "DOUG_20260218 · DOUG + DOUG Expanded"
+        - icon: ic-file
+          text: "LUDVIG v2.pdf, v3.pdf"
+    - label: "Agents"
+      items:
+        - icon: ic-file
+          text: "agnamo-agent-manager.agent.md"
+    - label: "Codex / vsDoug"
+      items:
+        - icon: ic-folder
+          text: "Codex/General · vsDoug (empty)"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "AI / Workshop"
+  icon: ic-flask
+  notion_card: false
+  tags:
+    - type: workshop
+      label: workshop
+  sections:
+    - label: "Downloaded Repos"
+      items:
+        - icon: ic-folder
+          text: "claude-cookbooks-main"
+          sub_items:
+            - icon: ic-notebook
+              text: "capabilities: classification, RAG, contextual-embeddings, summarization, text-to-sql"
+            - icon: ic-notebook
+              text: "claude_agent_sdk: one-liner, chief-of-staff, observability, SRE agents"
+    - label: "Skills"
+      items:
+        - icon: ic-file
+          text: "(skill files)"
+    - label: "LuxDev Context Documents"
+      items:
+        - icon: ic-file
+          text: "(context docs)"
+    - label: "Files"
+      items:
+        - icon: ic-folder
+          text: "files/"
+    - label: "AI / Deprecated"
+      items:
+        - icon: ic-folder
+          text: "<span class=\"tag tag-deprecated\">deprecated</span> &nbsp;(archived AI work)"
+  extra_items:
+    - icon: ic-globe
+      text: "ai-ecosystem-map.html"
+  divider_before_extra: true
+
+- title: "Agents"
+  icon: ic-terminal
+  notion_card: false
+  tags: []
+  sections:
+    - label: "federated-retrieval"
+      items:
+        - icon: ic-file
+          text: "PROJECT.md"
+    - label: "n8n-local"
+      items:
+        - icon: ic-docker
+          text: "docker-compose.yml"
+    - label: "Skills"
+      items:
+        - icon: ic-file
+          text: "docker-setup-skill.md"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Apps / Active"
+  icon: ic-zap
+  notion_card: false
+  tags:
+    - type: active
+      label: active
+  sections:
+    - label: "Projects"
+      items:
+        - icon: ic-folder
+          text: "LuxDev Agnamo"
+        - icon: ic-folder
+          text: "LuxDev-Comet-Clip"
+        - icon: ic-folder
+          text: "LuxDev-Ramen"
+        - icon: ic-folder
+          text: "anti-data-professional"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Apps / Archive"
+  icon: ic-archive
+  notion_card: false
+  tags:
+    - type: archive
+      label: archive
+  sections:
+    - label: "Archived Projects"
+      items:
+        - icon: ic-folder
+          text: "BigMapper"
+        - icon: ic-folder
+          text: "ReplitExport-luxtest"
+        - icon: ic-folder
+          text: "SvL GPT"
+        - icon: ic-folder
+          text: "anti-data"
+        - icon: ic-folder
+          text: "comet-clip-backup"
+        - icon: ic-folder
+          text: "discord bots"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Docker"
+  icon: ic-docker
+  notion_card: false
+  tags: []
+  sections:
+    - label: ""
+      items:
+        - text: "Docker configs / compose files"
+          style: "margin-top:6px;color:#6b7280;font-size:.8rem"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Limbo"
+  icon: ic-swirl
+  notion_card: false
+  tags: []
+  sections:
+    - label: "luxdev-disc-embed"
+      items:
+        - icon: ic-folder
+          text: "src/"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Resources"
+  icon: ic-books
+  notion_card: false
+  tags: []
+  sections:
+    - label: "Discord Documentation"
+      items:
+        - icon: ic-folder
+          text: "Discord API docs &amp; guides"
+    - label: "Tools and GitHub Finds"
+      items:
+        - icon: ic-folder
+          text: "claude-cookbooks-main"
+        - icon: ic-folder
+          text: "discord-api-docs-main"
+        - icon: ic-folder
+          text: "discord.js-main"
+        - icon: ic-folder
+          text: "hve-core-main"
+        - icon: ic-folder
+          text: "python-discord-webhook-master"
+        - icon: ic-folder
+          text: "archive/"
+    - label: "Assorted"
+      items:
+        - icon: ic-folder
+          text: "comet_clip_testing / temp"
+    - label: "Local Tester"
+      items:
+        - icon: ic-folder
+          text: "assets / ui"
+    - label: "Other"
+      items:
+        - icon: ic-folder
+          text: "master_mapping_keys"
+        - icon: ic-folder
+          text: "notion backups / 01 notion backup"
+  extra_items: []
+  divider_before_extra: false

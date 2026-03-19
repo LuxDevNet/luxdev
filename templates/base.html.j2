@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ meta.title }}</title>
+  <style>
+    /* ══════════════════════════════════════════
+       COMET CLIP TOKEN SYSTEM — ported from theme.css
+       Theme 0: Original dark (default)
+       Theme 1: LUDVIG 2 / temp2 (deep navy + orange)
+       Theme 2: Teal
+    ══════════════════════════════════════════ */
+
+    :root {
+      /* original dark — unchanged */
+      --cc-bg:       #0f0f13;
+      --cc-surface:  #18181f;
+      --cc-menu:     #13131a;
+      --cc-border:   #2a2a38;
+      --cc-text:     #e2e2e8;
+      --cc-text-sec: #6b6b80;
+      --cc-text-mid: #a0a0b8;
+      --cc-primary:  #a78bfa;
+      --cc-primary-s:#c4b5fd;
+      --cc-hover:    #1e1e2a;
+      --app-grad:
+        radial-gradient(900px 520px at 18% -10%, rgba(99,102,241,.14), transparent 60%),
+        radial-gradient(900px 520px at 90% 10%,  rgba(167,139,250,.10), transparent 55%);
+    }
+
+    [data-theme="ludvig2"] {
+      --cc-bg:       #0b1123;
+      --cc-surface:  #121d36;
+      --cc-menu:     #0d172d;
+      --cc-border:   #2a3e66;
+      --cc-text:     #e7eef8;
+      --cc-text-sec: #9fb2d3;
+      --cc-text-mid: #7a93be;
+      --cc-primary:  #ff8a1c;
+      --cc-primary-s:#ffad66;
+      --cc-hover:    #1b2a4d;
+      --app-grad:
+        radial-gradient(900px 520px at 12% -8%,  rgba(255,138,28,.24),  transparent 60%),
+        radial-gradient(900px 520px at 90%  8%,  rgba(56,189,248,.18),  transparent 55%),
+        radial-gradient(1000px 680px at 18% 120%,rgba(99,102,241,.16),  transparent 60%),
+        radial-gradient(700px  520px at 82% 120%,rgba(14,165,233,.10),  transparent 65%);
+    }
+
+    [data-theme="teal"] {
+      --cc-bg:       #042f2e;
+      --cc-surface:  #0f4c4a;
+      --cc-menu:     #083635;
+      --cc-border:   #134e4a;
+      --cc-text:     #f0fdfc;
+      --cc-text-sec: #5eead4;
+      --cc-text-mid: #99f6e4;
+      --cc-primary:  #2dd4bf;
+      --cc-primary-s:#5eead4;
+      --cc-hover:    #115e59;
+      --app-grad:
+        radial-gradient(900px 520px at 12% -10%, rgba(45,212,191,.22),  transparent 60%),
+        radial-gradient(900px 520px at 90%  10%, rgba(59,130,246,.14),  transparent 55%),
+        radial-gradient(900px 600px at 18%  120%,rgba(236,72,153,.06),  transparent 60%);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--cc-bg);
+      background-image: var(--app-grad);
+      background-attachment: fixed;
+      color: var(--cc-text);
+      padding: 32px;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── Header row ── */
+    .header-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 4px;
+    }
+    h1 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--cc-primary);
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s;
+    }
+    .subtitle {
+      font-size: 0.8rem;
+      color: var(--cc-text-sec);
+      margin-bottom: 22px;
+      transition: color 0.3s;
+    }
+
+    /* ── Theme switcher ── */
+    .theme-switcher {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+    .theme-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cc-text-sec);
+    }
+    .theme-swatch {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      position: relative;
+    }
+    .theme-swatch:hover { transform: scale(1.15); }
+    .theme-swatch.active { border-color: var(--cc-text); transform: scale(1.1); }
+    .swatch-default  { background: radial-gradient(circle at 35% 35%, #a78bfa, #0f0f13); }
+    .swatch-ludvig2  { background: radial-gradient(circle at 35% 35%, #ff8a1c, #0b1123); }
+    .swatch-teal     { background: radial-gradient(circle at 35% 35%, #2dd4bf, #042f2e); }
+
+    /* ── Tabs ── */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--cc-border);
+      padding-bottom: 0;
+      transition: border-color 0.3s;
+    }
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--cc-text-sec);
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid transparent;
+      border-bottom: none;
+      position: relative;
+      bottom: -1px;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
+      user-select: none;
+    }
+    .tab:hover { color: var(--cc-primary-s); background: var(--cc-surface); }
+    .tab.active {
+      color: var(--cc-primary-s);
+      background: var(--cc-surface);
+      border-color: var(--cc-border);
+      border-bottom-color: var(--cc-surface);
+    }
+    .tab svg { width: 14px; height: 14px; }
+
+    /* ── Panels ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Grid ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--cc-surface);
+      border: 1px solid var(--cc-border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--cc-border);
+      transition: border-color 0.3s;
+    }
+    .card-icon { width: 20px; height: 20px; flex-shrink: 0; color: var(--cc-primary); transition: color 0.3s; }
+    .card-title { font-size: 0.95rem; font-weight: 600; color: var(--cc-primary-s); transition: color 0.3s; }
+    .card-body { padding: 10px 14px 14px 14px; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--cc-text-sec);
+      margin-bottom: 5px;
+      margin-top: 10px;
+      transition: color 0.3s;
+    }
+    .item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 3px 0;
+      font-size: 0.8rem;
+      color: var(--cc-text-mid);
+      line-height: 1.4;
+    }
+    .item-icon { flex-shrink: 0; width: 13px; height: 13px; margin-top: 1px; color: var(--cc-text-sec); }
+    .sub-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 2px 0 2px 19px;
+      font-size: 0.75rem;
+      color: var(--cc-text-sec);
+      line-height: 1.4;
+    }
+    .sub-item-icon { flex-shrink: 0; width: 12px; height: 12px; margin-top: 1px; color: var(--cc-text-sec); opacity: .6; }
+
+    /* tags — use semi-transparent tints that shift with theme */
+    .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .tag-active     { background: rgba(74,222,128,.12); color: #4ade80; border: 1px solid rgba(74,222,128,.3); }
+    .tag-archive    { background: rgba(250,204,21,.10); color: #facc15; border: 1px solid rgba(250,204,21,.28); }
+    .tag-deprecated { background: rgba(248,113,113,.10); color: #f87171; border: 1px solid rgba(248,113,113,.28); }
+    .tag-workshop   { background: rgba(96,165,250,.10); color: #60a5fa; border: 1px solid rgba(96,165,250,.28); }
+    .tag-agent      { background: rgba(192,132,252,.10); color: #c084fc; border: 1px solid rgba(192,132,252,.28); }
+    .tag-db         { background: rgba(34,211,238,.10); color: #22d3ee; border: 1px solid rgba(34,211,238,.28); }
+    .tag-planned    { background: rgba(129,140,248,.10); color: #818cf8; border: 1px solid rgba(129,140,248,.28); }
+
+    .status-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      margin-right: 4px;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .dot-active   { background: #4ade80; }
+    .dot-complete { background: #60a5fa; }
+    .dot-planned  { background: #818cf8; }
+
+    .divider { height: 1px; background: var(--cc-border); margin: 10px 0; transition: background 0.3s; }
+
+    /* notion accent stripe */
+    .notion-card .card-header { border-left: 3px solid var(--cc-primary); padding-left: 13px; }
+
+    svg { display: block; }
+  </style>
+</head>
+<body>
+
+{% include 'icons.html.j2' %}
+{% from 'macros.html.j2' import render_card %}
+
+<!-- Page header -->
+<div class="header-row">
+  <div>
+    <h1>
+      <svg width="18" height="18"><use href="#ic-folder-lg"/></svg>
+      {{ meta.title }}
+    </h1>
+  </div>
+  <div class="theme-switcher">
+    <span class="theme-label">Theme</span>
+    <div class="theme-swatch swatch-default active" title="Default dark" onclick="setTheme('default', this)"></div>
+    <div class="theme-swatch swatch-ludvig2"         title="LUDVIG 2"     onclick="setTheme('ludvig2', this)"></div>
+    <div class="theme-swatch swatch-teal"            title="Teal"          onclick="setTheme('teal', this)"></div>
+  </div>
+</div>
+<p class="subtitle">{{ meta.subtitle }}</p>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  {% for tab in tabs %}
+  <div class="tab{% if loop.first %} active{% endif %}" onclick="switchTab('{{ tab.id }}')">
+    <svg><use href="#{{ tab.icon }}"/></svg>
+    {{ tab.label }}
+  </div>
+  {% endfor %}
+</div>
+
+{% for tab in tabs %}
+<div class="panel{% if loop.first %} active{% endif %}" id="panel-{{ tab.id }}">
+<div class="grid">
+  {% for card in tab.cards %}
+  {{ render_card(card) }}
+  {% endfor %}
+</div>
+</div>
+{% endfor %}
+
+<script>
+  function switchTab(name) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelector('[onclick="switchTab(\'' + name + '\')"]').classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+
+  function setTheme(name, el) {
+    document.documentElement.removeAttribute('data-theme');
+    if (name !== 'default') document.documentElement.setAttribute('data-theme', name);
+    document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('active'));
+    el.classList.add('active');
+    localStorage.setItem('lux-map-theme', name);
+  }
+
+  // restore on load
+  (function() {
+    const saved = localStorage.getItem('lux-map-theme');
+    if (saved && saved !== 'default') {
+      document.documentElement.setAttribute('data-theme', saved);
+      const swatchClass = 'swatch-' + saved;
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.theme-swatch').forEach(s => s.classList.remove('active'));
+        const el = document.querySelector('.' + swatchClass);
+        if (el) el.classList.add('active');
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+- title: "LuxDev-Agnamo"
+  icon: ic-git
+  notion_card: false
+  tags:
+    - type: active
+      label: active
+  sections:
+    - label: ""
+      items:
+        - text: "<span style=\"color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic\">Agent manager — orchestrates and runs LuxDev agents</span>"
+          style: "color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic"
+    - label: "Structure"
+      items:
+        - icon: ic-folder
+          text: "client/ · server/ · scripts/ · tests/ · docs/"
+    - label: "Stack"
+      items:
+        - icon: ic-server
+          text: "Express · Zod"
+        - icon: ic-test
+          text: "Vitest · Playwright · Supertest"
+    - label: "Key Files"
+      items:
+        - icon: ic-file
+          text: "package.json · playwright.config.js"
+        - icon: ic-file
+          text: "vitest.config.js · Run Agnamo.bat"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "anti-data-professional"
+  icon: ic-git
+  notion_card: false
+  tags:
+    - type: active
+      label: active
+  sections:
+    - label: ""
+      items:
+        - text: "<span style=\"color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic\">Modular data processing web app — ANALYZE, REMAP, COMPARE</span>"
+          style: "color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic"
+    - label: "Stack"
+      items:
+        - icon: ic-monitor
+          text: "React · TypeScript · Vite"
+        - icon: ic-tag
+          text: "Recharts · lucide-react · xlsx"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "LuxDev-Ramen"
+  icon: ic-git
+  notion_card: false
+  tags:
+    - type: active
+      label: active
+  sections:
+    - label: ""
+      items:
+        - text: "<span style=\"color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic\">Desktop app — Electron frontend + FastAPI backend</span>"
+          style: "color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic"
+    - label: "Frontend"
+      items:
+        - icon: ic-monitor
+          text: "React · Electron · Vite · Zustand"
+        - icon: ic-test
+          text: "Vitest · @testing-library/react"
+    - label: "Backend"
+      items:
+        - icon: ic-server
+          text: "FastAPI · Uvicorn · Pydantic v2"
+        - icon: ic-robot
+          text: "anthropic SDK · httpx · sse-starlette"
+    - label: "Key Files"
+      items:
+        - icon: ic-file
+          text: "ramen.exe · ramen-backend.spec"
+        - icon: ic-file
+          text: "SKILL.md · TESTING.md · pytest.ini"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "LuxDev-Comet-Clip"
+  icon: ic-git
+  notion_card: false
+  tags:
+    - type: active
+      label: active
+  sections:
+    - label: ""
+      items:
+        - text: "<span style=\"color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic\">Themed UI component library — CSS variables + design tokens</span>"
+          style: "color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic"
+    - label: "Stack"
+      items:
+        - icon: ic-palette
+          text: "CSS · Design tokens · Theme system"
+        - icon: ic-tag
+          text: "6 theme variants · frosted glass · animation"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "BigMapper"
+  icon: ic-git
+  notion_card: false
+  tags:
+    - type: db
+      label: complete
+  sections:
+    - label: ""
+      items:
+        - text: "<span style=\"color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic\">v2.5 — CSV/TSV mapping, comparison &amp; remapping (Windows)</span>"
+          style: "color:#6b7280;font-size:.75rem;margin-bottom:6px;font-style:italic"
+    - label: "Stack"
+      items:
+        - icon: ic-monitor
+          text: "React · Electron · Tailwind CSS"
+        - icon: ic-tag
+          text: "lucide-react · electron-builder"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Agent Projects"
+  icon: ic-robot
+  notion_card: false
+  tags:
+    - type: agent
+      label: agents
+  sections:
+    - label: "asabi"
+      items:
+        - icon: ic-flow
+          text: "Asana → BigQuery sync pipeline"
+          sub_items:
+            - icon: ic-tag
+              text: "Python · ThreadPoolExecutor · n8n orchestration"
+    - label: "LOAKI"
+      items:
+        - icon: ic-robot
+          text: "LuxDev Orchestrated API Agent Kit"
+          sub_items:
+            - icon: ic-tag
+              text: "Contract through validation pipeline"
+    - label: "federated-retrieval"
+      items:
+        - icon: ic-database
+          text: "RAG / vector / retrieval agent"
+          sub_items:
+            - icon: ic-file
+              text: "PROJECT.md"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Reference Repos"
+  icon: ic-books
+  notion_card: false
+  tags:
+    - type: workshop
+      label: reference
+  sections:
+    - label: "AI"
+      items:
+        - icon: ic-folder
+          text: "claude-cookbooks-main <span style=\"color:#6b7280;font-size:.72rem\">— Anthropic SDK examples &amp; RAG guides</span>"
+    - label: "Discord"
+      items:
+        - icon: ic-folder
+          text: "discord-api-docs-main"
+        - icon: ic-folder
+          text: "discord.js-main"
+        - icon: ic-folder
+          text: "python-discord-webhook-master"
+    - label: "Other"
+      items:
+        - icon: ic-folder
+          text: "hve-core-main"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Archived Repos"
+  icon: ic-archive
+  notion_card: false
+  tags:
+    - type: archive
+      label: archive
+  sections:
+    - label: ""
+      items:
+        - icon: ic-folder
+          text: "anti-data <span style=\"color:#6b7280;font-size:.72rem\">— v1 → v4 archive branches</span>"
+        - icon: ic-folder
+          text: "SvL GPT"
+        - icon: ic-folder
+          text: "ReplitExport-luxtest"
+        - icon: ic-folder
+          text: "discord bots <span style=\"color:#6b7280;font-size:.72rem\">— discord.js based</span>"
+        - icon: ic-folder
+          text: "comet-clip-backup"
+  extra_items: []
+  divider_before_extra: false

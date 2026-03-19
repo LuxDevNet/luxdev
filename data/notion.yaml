@@ -1,0 +1,291 @@
+- title: "Lux Central"
+  icon: ic-home
+  notion_card: true
+  tags: []
+  sections:
+    - label: ""
+      items:
+        - text: "<span style=\"color:#6b7280;font-size:.75rem;margin-bottom:4px;font-style:italic\">&#8220;To fuck around and create many little neat things&#8221;</span>"
+          style: "color:#6b7280;font-size:.75rem;margin-bottom:4px;font-style:italic"
+    - label: "Sitemap"
+      items:
+        - icon: ic-link
+          text: "Lux Central (hub)"
+        - icon: ic-link
+          text: "Professional Projects"
+        - icon: ic-link
+          text: "Personal Projects"
+        - icon: ic-link
+          text: "Integrations"
+        - icon: ic-link
+          text: "Inspiration"
+    - label: "Featured Works"
+      items:
+        - status_dot: complete
+          text: "BigMapper v2.5 — CSV/TSV windows app"
+        - status_dot: active
+          text: "Anti-Data v13.2.1 — data processing web app"
+    - label: "Database"
+      items:
+        - icon: ic-database
+          text: "LuxDev Projects <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Tools, Guides &amp; AI"
+  icon: ic-sparkle
+  notion_card: true
+  tags: []
+  sections:
+    - label: "Model Development Pages"
+      items:
+        - icon: ic-notion
+          text: "LUDVIG v.2"
+        - icon: ic-notion
+          text: "LuxScript"
+        - icon: ic-notion
+          text: "Prompt Net Quality Score (PnQs)"
+        - icon: ic-notion
+          text: "LUDVIG Design: Master Library"
+        - icon: ic-notion
+          text: "LuxDev Model Development"
+        - icon: ic-notion
+          text: "AntiData × KPLux"
+        - icon: ic-notion
+          text: "Vector Storage"
+        - icon: ic-notion
+          text: "MFBA Report Logic"
+    - label: "Agent Databases"
+      items:
+        - icon: ic-database
+          text: "Agent Index <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+        - icon: ic-database
+          text: "Agent Run Log <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+        - icon: ic-database
+          text: "Agent Orchestration <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+        - icon: ic-database
+          text: "Webhooks <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+        - icon: ic-database
+          text: "PnQs Calibration <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+    - label: "Sub-pages"
+      items:
+        - icon: ic-notion
+          text: "LuxDev Agents"
+        - icon: ic-notion
+          text: "LuxDev: RAG, Vector &amp; Retrieval Agents"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "LuxDev Agents"
+  icon: ic-robot
+  notion_card: true
+  tags:
+    - type: agent
+      label: agents
+  sections:
+    - label: "Kickstart Agent"
+      items:
+        - text: "Vague inputs → structured plans + code scaffolds"
+          style: "color:#a0a0b8;font-size:.77rem"
+          sub_items:
+            - icon: ic-robot
+              text: "Clarifier → Architect → Coder → Tester → Experiment"
+    - label: "Admo Agent"
+      items:
+        - text: "Signals → living documentation + admin ops"
+          style: "color:#a0a0b8;font-size:.77rem"
+          sub_items:
+            - icon: ic-robot
+              text: "Classifier → Doc Structurer → Versioner → Compliance → Comms"
+    - label: "Active Agent Projects"
+      items:
+        - status_dot: active
+          text: "asabi — Asana → BigQuery Sync"
+        - status_dot: active
+          text: "LOAKI — LuxDev Orchestrated API Agent Kit"
+        - status_dot: active
+          text: "Agnamo — Agent Manager"
+    - label: "Databases"
+      items:
+        - icon: ic-database
+          text: "asabi Tasks &amp; Integration <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Apps &amp; Development"
+  icon: ic-package
+  notion_card: true
+  tags: []
+  sections:
+    - label: "App Database"
+      items:
+        - icon: ic-database
+          text: "App Database <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+    - label: "Active Apps"
+      items:
+        - status_dot: active
+          text: "Anti-Data v13.2.1 <span style=\"color:#6b7280;font-size:.72rem\">— data processing / remapping</span>"
+        - status_dot: active
+          text: "Comet Clip <span style=\"color:#6b7280;font-size:.72rem\">— themed UI components</span>"
+        - status_dot: active
+          text: "KPLux v3.0 <span style=\"color:#6b7280;font-size:.72rem\">— employee performance BI dashboard</span>"
+        - status_dot: active
+          text: "Agnamo <span style=\"color:#6b7280;font-size:.72rem\">— agent manager</span>"
+        - status_dot: active
+          text: "LuxScript v3.0 <span style=\"color:#6b7280;font-size:.72rem\">— DSL for charts &amp; data viz</span>"
+    - label: "Planned"
+      items:
+        - status_dot: planned
+          text: "LuxQuery v1.0 <span style=\"color:#6b7280;font-size:.72rem\">— BigQuery interface</span>"
+        - status_dot: planned
+          text: "BauBau v1.0 <span style=\"color:#6b7280;font-size:.72rem\">— dashboard + data upload</span>"
+        - status_dot: planned
+          text: "LuxDev Ramen <span style=\"color:#6b7280;font-size:.72rem\">— in ideation</span>"
+    - label: "Complete"
+      items:
+        - status_dot: complete
+          text: "BigMapper v2.5 <span style=\"color:#6b7280;font-size:.72rem\">— CSV/TSV windows app</span>"
+    - label: "Templates"
+      items:
+        - icon: ic-notion
+          text: "LuxDev: Workshop [TEMPLATE]"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "LuxDev Agency"
+  icon: ic-briefcase
+  notion_card: true
+  tags: []
+  sections:
+    - label: ""
+      items:
+        - text: "<span style=\"color:#6b7280;font-size:.75rem;margin-bottom:4px;font-style:italic\">Cut external dependencies, return Agency to the client</span>"
+          style: "color:#6b7280;font-size:.75rem;margin-bottom:4px;font-style:italic"
+    - label: "Doug Check-ins"
+      items:
+        - icon: ic-database
+          text: "Doug Tasks <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+    - label: "Agent Resources"
+      items:
+        - icon: ic-database
+          text: "Agents <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+        - icon: ic-database
+          text: "Skills <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+        - icon: ic-database
+          text: "Other Context <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+    - label: "Sub-pages"
+      items:
+        - icon: ic-notion
+          text: "LOAKI: API Agent Kit"
+        - icon: ic-notion
+          text: "Contract Template"
+        - icon: ic-notion
+          text: "Guide Template"
+        - icon: ic-notion
+          text: "Workshop [Template]"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "AI Framework / Models"
+  icon: ic-layers
+  notion_card: true
+  tags: []
+  sections:
+    - label: "LuxCentral Ecosystem"
+      items:
+        - text: "Central hub organizing all projects, tools &amp; systems"
+          style: "color:#6b7280;font-size:.75rem;margin-bottom:6px"
+        - icon: ic-notion
+          text: "Data Tools → BigMapper, Anti-Data, YouBuilder"
+        - icon: ic-notion
+          text: "Analytics → KPLux, LuxQuery, BauBau"
+        - icon: ic-notion
+          text: "AI Integration → LuxScript, LuxMapping, Gemini"
+        - icon: ic-notion
+          text: "Design Systems → LUDVIG, Comet Clip, LuxChroma"
+    - label: "Compliance Layer"
+      items:
+        - icon: ic-notion
+          text: "Doug (AI model)"
+        - icon: ic-notion
+          text: "MDF — Model Behavior Framework"
+        - icon: ic-notion
+          text: "PnQs — Prompt Quality Scoring"
+        - icon: ic-notion
+          text: "AI Custom Modules"
+        - icon: ic-notion
+          text: "System Instructions"
+    - label: "LUDVIG"
+      items:
+        - status_dot: active
+          text: "LUDVIG v.2 — AI instruction framework"
+        - icon: ic-notion
+          text: "LUDVIG Design: Master Library"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "LuxAmz — Amazon &amp; eCommerce"
+  icon: ic-package
+  notion_card: true
+  tags: []
+  sections:
+    - label: "Policy Docs"
+      items:
+        - icon: ic-notion
+          text: "Account Health &amp; Legal"
+        - icon: ic-notion
+          text: "Catalog &amp; Listing Management"
+        - icon: ic-notion
+          text: "Content &amp; Merchandising"
+        - icon: ic-notion
+          text: "Customer Service &amp; Returns"
+        - icon: ic-notion
+          text: "FBA Inventory, Costs &amp; Reporting"
+    - label: "Analytics"
+      items:
+        - icon: ic-notion
+          text: "E-commerce &amp; Catalog Analytics"
+  extra_items: []
+  divider_before_extra: false
+
+- title: "Resources &amp; Databases"
+  icon: ic-books
+  notion_card: true
+  tags: []
+  sections:
+    - label: "Reference Pages"
+      items:
+        - icon: ic-notion
+          text: "Resources"
+        - icon: ic-notion
+          text: "Analytics Platforms"
+        - icon: ic-notion
+          text: "Data Tools"
+        - icon: ic-notion
+          text: "Design Systems"
+        - icon: ic-notion
+          text: "AI Platforms"
+        - icon: ic-notion
+          text: "Style Guide"
+        - icon: ic-notion
+          text: "Docker Setup"
+        - icon: ic-notion
+          text: "Draw.io Integration: Mermaid plugin"
+        - icon: ic-notion
+          text: "Documentation"
+    - label: "Task Databases"
+      items:
+        - icon: ic-database
+          text: "luxdev-tasks <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+        - icon: ic-database
+          text: "Tasks Tracker <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+        - icon: ic-database
+          text: "LuxDev Projects <span class=\"tag tag-db\" style=\"margin-left:4px\">db</span>"
+    - label: "Daily / Scratch"
+      items:
+        - icon: ic-notion
+          text: "Daily"
+        - icon: ic-notion
+          text: "Ideation [Template]"
+  extra_items: []
+  divider_before_extra: false
